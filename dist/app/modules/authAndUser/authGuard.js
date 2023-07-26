@@ -12,21 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = __importDefault(require("./config"));
-const app_1 = __importDefault(require("./app"));
-let server;
-function rocket() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield mongoose_1.default.connect(config_1.default.database_url);
-            server = app_1.default.listen(config_1.default.port, () => {
-                console.log(`Application listening at http://localhost:${config_1.default.port}`);
-            });
+const http_status_1 = __importDefault(require("http-status"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
+const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
+const config_1 = __importDefault(require("../../../config"));
+const authGuard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const token = req.headers.authorization;
+        if (!token) {
+            throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "You are not Authorized");
         }
-        catch (error) {
-            console.log(`failed to connect database`, error);
-        }
-    });
-}
-rocket();
+        let verifiedUser = null;
+        verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
+        req.user = verifiedUser;
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.default = authGuard;
