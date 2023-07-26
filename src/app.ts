@@ -2,7 +2,7 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import globalErrorHandler from './app/middleware/globalErrorHanlder';
-import router from './app/routes';
+import routes from './app/routes';
 import httpStatus from 'http-status';
 
 const app: Application = express();
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
 //application
-app.use("/api/v1/", router)
+app.use("/api/v1/", routes)
 
 // token save req.user
 
