@@ -58,17 +58,21 @@ const allBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () {
             }))
         });
     }
-    console.log(Object.keys(filtersData).length);
-    console.log(Object.entries(filtersData).map(([field, value]) => ({
-        [field]: value
-    })));
-    console.log(andConditions, "and");
+    // console.log(Object.keys(filtersData).length);
+    // console.log(
+    //   Object.entries(filtersData).map(([field, value]) => ({
+    //     [field]: value
+    //   }))
+    // );
+    // console.log(andConditions, "and");
+    console.log(andConditions.length > 0);
     const whereConditionsData = andConditions.length > 0
         ? {
             $and: andConditions
         }
         : {};
     // console.log(whereConditionsData);
+    console.log(whereConditionsData, 'data');
     const result = yield book_model_1.Book.find(whereConditionsData);
     return result;
 });
@@ -110,7 +114,7 @@ const bookDelete = (id, user) => __awaiter(void 0, void 0, void 0, function* () 
         userId: user === null || user === void 0 ? void 0 : user.userId
     });
     if (!result) {
-        throw new ApiError_1.default(http_status_1.default.FORBIDDEN, "!Warning, This book it's not yours, so you don't edit this book");
+        throw new ApiError_1.default(http_status_1.default.FORBIDDEN, "!Warning, This book it's not yours, so you don't delete this book");
     }
     return result;
 });

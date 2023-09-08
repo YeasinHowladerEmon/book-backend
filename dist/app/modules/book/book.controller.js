@@ -40,7 +40,7 @@ const books = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
 const allBooks = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, book_constant_1.bookFilterableFields);
     // const paginationOptions = pick(req.query, paginationFields);
-    // console.log(filters,paginationOptions);
+    console.log(filters);
     const result = yield book_service_1.BookService.allBooks(filters);
     //impliment filter and search
     (0, sendResponse_1.default)(res, {

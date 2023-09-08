@@ -18,10 +18,12 @@ const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const config_1 = __importDefault(require("../../../config"));
 const authGuard = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const token = req.headers.authorization;
-        if (!token) {
+        const authorizationHeader = req.headers.authorization;
+        console.log('token', authorizationHeader);
+        if (!authorizationHeader) {
             throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, "You are not Authorized");
         }
+        const token = authorizationHeader.replace("Bearer", '');
         let verifiedUser = null;
         verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
         req.user = verifiedUser;
