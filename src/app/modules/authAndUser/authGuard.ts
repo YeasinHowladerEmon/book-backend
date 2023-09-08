@@ -7,10 +7,14 @@ import { Secret } from "jsonwebtoken";
 
 const authGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization;
-    if (!token) {
+    const authorizationHeader = req.headers.authorization;
+    console.log('token', authorizationHeader);
+    if (!authorizationHeader) {
       throw new ApiError(httpStatus.UNAUTHORIZED, "You are not Authorized");
     }
+
+const token = authorizationHeader.replace("Bearer", '');
+
     let verifiedUser = null;
     verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
 

@@ -15,6 +15,7 @@ const addNewBook = async (
   const result = await Book.create(payload);
   return result;
 };
+
 const books = async () => {
   const result = await Book.find({}).sort({ timestamp: -1 }).limit(10);
   return result;
@@ -42,14 +43,15 @@ const allBooks = async (filters: IBookFilters) => {
       }))
     });
   }
-  console.log(Object.keys(filtersData).length);
-  console.log(
-    Object.entries(filtersData).map(([field, value]) => ({
-      [field]: value
-    }))
-  );
-  console.log(andConditions, "and");
+  // console.log(Object.keys(filtersData).length);
+  // console.log(
+  //   Object.entries(filtersData).map(([field, value]) => ({
+  //     [field]: value
+  //   }))
+  // );
+  // console.log(andConditions, "and");
 
+  console.log(andConditions.length > 0)
   const whereConditionsData =
     andConditions.length > 0
       ? {
@@ -58,6 +60,7 @@ const allBooks = async (filters: IBookFilters) => {
       : {};
   // console.log(whereConditionsData);
 
+console.log(whereConditionsData, 'data')
   const result = await Book.find(whereConditionsData);
   return result;
 };
@@ -127,7 +130,7 @@ const bookDelete = async (
   if (!result) {
     throw new ApiError(
       httpStatus.FORBIDDEN,
-      "!Warning, This book it's not yours, so you don't edit this book"
+      "!Warning, This book it's not yours, so you don't delete this book"
     );
   }
   return result;
